@@ -6,11 +6,15 @@ import com.briup.cms.service.ILinkService;
 import com.briup.cms.util.Message;
 import com.briup.cms.util.MessageUtil;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/link")
@@ -26,5 +30,31 @@ public class LinkController {
     public Message addLink(Link link) {
         linkService.addLink(link);
         return MessageUtil.success();
+    }
+    @PostMapping("/update")
+    @ApiOperation("更新链接")
+    public Message updateLink(Link link){
+        linkService.updateLink(link);
+        return MessageUtil.success();
+    }
+    @GetMapping("delete")
+    @ApiOperation("删除链接")
+    @ApiImplicitParam(name = "id",value = "链接id",required = true,paramType = "query",dataType = "int")
+    public Message deleteLinkById(int id){
+        linkService.deleteLinkById(id);
+        return MessageUtil.success();
+    }
+    @GetMapping("/findLinkById")
+    @ApiOperation("根据ID查询链接")
+    @ApiImplicitParam(name = "id",value = "链接id",required = true,paramType = "query",dataType = "int")
+    public Message<Link> findLinkById(int id){
+        return MessageUtil.success(linkService.findLinkById(id));
+    }
+
+    @GetMapping("/findAllLink")
+    @ApiOperation("查询所有的链接")
+
+    public Message<List<Link>>findAllLink(){
+        return MessageUtil.success(linkService.findAllLink());
     }
 }
